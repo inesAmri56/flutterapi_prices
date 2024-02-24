@@ -1,13 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapi_prices/network/dio_helper.dart';
 
-class Screen1 extends StatelessWidget {
+class Screen1 extends StatefulWidget {
   const Screen1({Key? key}) : super(key: key);
 
   @override
+  State<Screen1> createState() => _Screen1State();
+}
+
+class _Screen1State extends State<Screen1> {
+  @override
+   void initState(){
+    super.initState();
+    getGoldPrice();
+    getSilverPrice();
+
+  }
+  @override
   Widget build(BuildContext context) {
+
+    getGoldPrice();
     double screenWidth = MediaQuery.of(context).size.width;
-    double imageWidth = (screenWidth - 28) / 2; // 28 is the sum of padding and spacing
+    double imageWidth = (screenWidth - 28) / 2; // 28 is the sum o// f padding and spacing
+
 
     return Scaffold(
       backgroundColor: Colors.grey[800],
@@ -95,7 +111,7 @@ class Screen1 extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '1800\$', // Provide the actual text value
+                  '$goldI\$', // Provide the actual text value
                   style: TextStyle(
                     color: Colors.orange[800],
                     fontWeight: FontWeight.bold,
@@ -132,7 +148,7 @@ class Screen1 extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '1800\$',
+                  '$silverI\$',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -156,4 +172,31 @@ class Screen1 extends StatelessWidget {
       ),
     );
   }
-}
+  double? goldD;
+  int? goldI;
+  double? silverD;
+  int? silverI;
+
+  getGoldPrice(){
+    DioHelper.getData('XAU/USD/').then((value) {
+     setState(() {// setstate to be not null
+
+         goldD = value.data['price'];
+         goldI=goldD!.round();
+         print(goldI);
+       }
+     );
+    })
+    ;
+
+  }
+  getSilverPrice() {
+    DioHelper.getData('XAG/USD/').then((value) {
+      setState(() { // set state to be not null
+
+        silverD = value.data['price'];
+        silverI = silverD!.round();
+        print(silverI);
+      });
+    });
+  }}
