@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapi_prices/screen1.dart';
 
+import 'network/dio_helper.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();//because Future must not  be in the main app
+  DioHelper.init();
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
